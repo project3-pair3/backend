@@ -7,13 +7,14 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class CafeRequest {
-    // TODO:
-    //    String address;
-    //    LocalDateTime open;
-    //    LocalDateTime close;
     String name;
+    String address;
     String addressDetail;
+    LocalDateTime open;
+    LocalDateTime close;
     String imageUrl;
 }

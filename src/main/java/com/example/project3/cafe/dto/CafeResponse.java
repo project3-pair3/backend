@@ -4,15 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter @Setter
 @AllArgsConstructor
 public class CafeResponse {
-    // TODO:
-    //    String address;
-    //    LocalDateTime open;
-    //    LocalDateTime close;
     Long id;
     String name;
+    String address;
     String addressDetail;
+    LocalDateTime open;
+    LocalDateTime close;
     String imageUrl;
 }

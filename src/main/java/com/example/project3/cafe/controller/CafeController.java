@@ -17,7 +17,7 @@ public class CafeController {
     // 카페 생성
     @PostMapping
     ResponseEntity<CafeResponse> createCafe(@RequestBody CafeRequest cafeRequest) {
-        CafeResponse cafeResponse = new CafeResponse(1L, cafeRequest.getName(), cafeRequest.getAddressDetail(), cafeRequest.getImageUrl());
+        CafeResponse cafeResponse = new CafeResponse(1L, cafeRequest.getName(), cafeRequest.getAddress(), cafeRequest.getAddressDetail(), LocalDateTime.now(), LocalDateTime.now(), cafeRequest.getImageUrl());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(cafeResponse);
@@ -27,9 +27,9 @@ public class CafeController {
     @GetMapping
     ResponseEntity<List<CafeResponse>> getCafeList(){
         List<CafeResponse> cafeResponseList = new ArrayList<>();
-        CafeResponse cafe1 = new CafeResponse(1L, "first", "서울시 강남구", "https://picsum.photos/200/300");
-        CafeResponse cafe2 = new CafeResponse(2L, "second", "서울시 강남구", "https://picsum.photos/200/300");
-        CafeResponse cafe3 = new CafeResponse(3L, "third", "서울시 강남구", "https://picsum.photos/200/300");
+        CafeResponse cafe1 = new CafeResponse(1L, "first", "서울시 강남구 강남대로 889", "서울시 강남구", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300");
+        CafeResponse cafe2 = new CafeResponse(2L, "second", "서울시 강남구 강남대로 889", "서울시 강남구", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300");
+        CafeResponse cafe3 = new CafeResponse(3L, "third", "서울시 강남구 강남대로 889", "서울시 강남구", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300");
         cafeResponseList.add(cafe1);
         cafeResponseList.add(cafe2);
         cafeResponseList.add(cafe3);
