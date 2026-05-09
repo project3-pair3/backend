@@ -7,6 +7,10 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 public class CafeResponse {
+    // TODO:
+    //    String address;
+    //    LocalDateTime open;
+    //    LocalDateTime close;
     Long id;
     String name;
     String addressDetail;

@@ -9,6 +9,10 @@ import lombok.Getter;
 
 @Getter
 public class CafeRequest {
+    // TODO:
+    //    String address;
+    //    LocalDateTime open;
+    //    LocalDateTime close;
     String name;
     String addressDetail;
     String imageUrl;
