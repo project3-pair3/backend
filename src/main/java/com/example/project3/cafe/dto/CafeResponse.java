@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 public class CafeResponse {
     Long id;
     String cafeName;
-    String address;
+    String addressCity;
+    String addressDistrict;
     String addressDetail;
     LocalDateTime open;
     LocalDateTime close;

@@ -11,7 +11,8 @@ import java.util.List;
 public class CafeMenuResponse {
     Long cafeId;
     String cafeName;
-    String address;
+    String addressCity;
+    String addressDistrict;
     String addressDetail;
     String description;
     LocalDateTime open;
