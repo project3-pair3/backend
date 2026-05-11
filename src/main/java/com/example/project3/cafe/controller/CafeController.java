@@ -10,26 +10,25 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/cafes")
 public class CafeController {
     // 카페 생성
     @PostMapping
     ResponseEntity<CafeResponse> createCafe(@RequestBody CafeRequest cafeRequest) {
-        CafeResponse cafeResponse = new CafeResponse(1L, cafeRequest.getCafeName(), cafeRequest.getAddress(), cafeRequest.getAddressDetail(), LocalDateTime.now(), LocalDateTime.now(), cafeRequest.getImageUrl(), 10);
+        CafeResponse cafeResponse = new CafeResponse(1L, cafeRequest.getCafeName(), cafeRequest.getAddress(), cafeRequest.getAddressDetail(), LocalDateTime.now(), LocalDateTime.now(), cafeRequest.getImageUrl(), 10, LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(cafeResponse);
     }
 
-    // 카페 리스트 조회
+    // 카페 리스트 조회 (필터링 추가)
     @GetMapping
-    ResponseEntity<List<CafeResponse>> getCafeList(){
+    ResponseEntity<List<CafeResponse>> getCafeList(@RequestParam Long categoryId, @RequestParam String city, @RequestParam String district, @RequestParam String listingType){
         List<CafeResponse> cafeResponseList = new ArrayList<>();
-        CafeResponse cafe1 = new CafeResponse(1L, "first", "서울시 강남구 강남대로 889", "서울시 강남구", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 15);
-        CafeResponse cafe2 = new CafeResponse(2L, "second", "서울시 강남구 강남대로 889", "서울시 강남구", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 16);
-        CafeResponse cafe3 = new CafeResponse(3L, "third", "서울시 강남구 강남대로 889", "서울시 강남구", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 17);
+        CafeResponse cafe1 = new CafeResponse(1L, "first", "서울시 강남구 강남대로 889", "서울시 강남구", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 15, LocalDateTime.now());
+        CafeResponse cafe2 = new CafeResponse(2L, "second", "서울시 강남구 강남대로 889", "서울시 강남구", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 16, LocalDateTime.now());
+        CafeResponse cafe3 = new CafeResponse(3L, "third", "서울시 강남구 강남대로 889", "서울시 강남구", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 17, LocalDateTime.now());
         cafeResponseList.add(cafe1);
         cafeResponseList.add(cafe2);
         cafeResponseList.add(cafe3);

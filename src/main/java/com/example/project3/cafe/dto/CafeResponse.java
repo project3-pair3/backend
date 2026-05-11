@@ -17,4 +17,5 @@ public class CafeResponse {
     LocalDateTime close;
     String imageUrl;
     Integer totalCount;
+    LocalDateTime createdAt;
 }
