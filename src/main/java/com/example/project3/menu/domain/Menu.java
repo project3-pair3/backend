@@ -25,11 +25,11 @@ public class Menu {
 
     private Integer stock;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cafe_id", nullable = false)
     Cafe cafe;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_category_id", nullable = false)
     MenuCategory menuCategory;
 

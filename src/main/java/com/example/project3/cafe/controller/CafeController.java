@@ -29,6 +29,7 @@ public class CafeController {
     }
 
     // 카페 리스트 조회 (필터링 추가)
+    // TODO: service, repository 레이어
     @GetMapping
     ResponseEntity<List<CafeResponse>> getCafeList(@RequestParam Long categoryId, @RequestParam String addressCity, @RequestParam String addressDistrict, @RequestParam String listingType){
         List<CafeResponse> cafeResponseList = new ArrayList<>();
@@ -52,6 +53,7 @@ public class CafeController {
     }
 
     // 오늘의 카페 메뉴 - 조회
+    // TODO: service, repository 레이어
     @GetMapping("{id}/menus")
     ResponseEntity<CafeMenuResponse> getDailyMenu(@PathVariable Long id){
         List<ItemDto> menu = new ArrayList<>();

@@ -8,6 +8,7 @@ import com.example.project3.menu.repository.MenuRepository;
 import com.example.project3.menuCategory.domain.MenuCategory;
 import com.example.project3.menuCategory.repository.MenuCategoryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class CafeServiceImpl implements CafeService {
         return CafeResponse.from(newCafe);
     }
 
+    @Transactional
     public CafeMenuResponse createDailyMenu(CafeMenuRequest menuRequest) {
         // Cafe 생성
         Cafe requestCafe = Cafe.builder()
