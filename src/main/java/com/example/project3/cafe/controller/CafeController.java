@@ -26,9 +26,9 @@ public class CafeController {
     @GetMapping
     ResponseEntity<List<CafeResponse>> getCafeList(@RequestParam Long categoryId, @RequestParam String addressCity, @RequestParam String addressDistrict, @RequestParam String listingType){
         List<CafeResponse> cafeResponseList = new ArrayList<>();
-        CafeResponse cafe1 = new CafeResponse(1L, "first", "서울", "강남", "서울시 강남구 강남대로 889", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 15, LocalDateTime.now());
-        CafeResponse cafe2 = new CafeResponse(2L, "second","서울", "강남", "서울시 강남구 강남대로 889", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 16, LocalDateTime.now());
-        CafeResponse cafe3 = new CafeResponse(3L, "third","서울", "강남", "서울시 강남구 강남대로 889", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 17, LocalDateTime.now());
+        CafeResponse cafe1 = new CafeResponse(1L, "first", "서울시", "강남구", "강남대로 889", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 15, LocalDateTime.now());
+        CafeResponse cafe2 = new CafeResponse(2L, "second","서울시", "강남구", "강남대로 889", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 16, LocalDateTime.now());
+        CafeResponse cafe3 = new CafeResponse(3L, "third","서울시", "강남구", "강남대로 889", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", 17, LocalDateTime.now());
         cafeResponseList.add(cafe1);
         cafeResponseList.add(cafe2);
         cafeResponseList.add(cafe3);
@@ -58,7 +58,7 @@ public class CafeController {
         menu.add(item3);
         menu.add(item4);
 
-        CafeMenuResponse response = new CafeMenuResponse(id, "cafe", "서울", "강남", "서울시 강남구 강남대로 889", "오랜만에 앵그리 군옥수수가 나왔어요~", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", menu);
+        CafeMenuResponse response = new CafeMenuResponse(id, "cafe", "서울시", "강남구", "강남대로 889", "오랜만에 앵그리 군옥수수가 나왔어요~", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", menu);
 
         return ResponseEntity.ok(response);
     }
