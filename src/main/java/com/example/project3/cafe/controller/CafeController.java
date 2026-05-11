@@ -45,7 +45,7 @@ public class CafeController {
     // 오늘의 카페 메뉴 - 생성
     @PostMapping("/menus")
     ResponseEntity<CafeMenuResponse> createDailyMenu(@RequestBody CafeMenuRequest menuRequest){
-        CafeMenuResponse response = new CafeMenuResponse(1L, menuRequest.getCafeName(), menuRequest.getAddressCity(), menuRequest.getAddressDistrict(), menuRequest.getAddressDetail(), menuRequest.getDescription(), LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", menuRequest.getMenu());
+        CafeMenuResponse response = cafeService.createDailyMenu(menuRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(response);
@@ -55,10 +55,10 @@ public class CafeController {
     @GetMapping("{id}/menus")
     ResponseEntity<CafeMenuResponse> getDailyMenu(@PathVariable Long id){
         List<ItemDto> menu = new ArrayList<>();
-        ItemDto item1 = new ItemDto("오레오", 1L, 3000, 20);
-        ItemDto item2 = new ItemDto("군옥수수", 1L, 3500, 25);
-        ItemDto item3 = new ItemDto("솔티카라멜", 2L, 2500, 10);
-        ItemDto item4 = new ItemDto("무화과", 2L, 3000, 15);
+        ItemDto item1 = new ItemDto("오레오", 1L, 3000L, 20);
+        ItemDto item2 = new ItemDto("군옥수수", 1L, 3500L, 25);
+        ItemDto item3 = new ItemDto("솔티카라멜", 2L, 2500L, 10);
+        ItemDto item4 = new ItemDto("무화과", 2L, 3000L, 15);
         menu.add(item1);
         menu.add(item2);
         menu.add(item3);
