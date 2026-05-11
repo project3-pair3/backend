@@ -17,7 +17,7 @@ public class CafeController {
     // 카페 생성
     @PostMapping
     ResponseEntity<CafeResponse> createCafe(@RequestBody CafeRequest cafeRequest) {
-        CafeResponse cafeResponse = new CafeResponse(1L, cafeRequest.getName(), cafeRequest.getAddress(), cafeRequest.getAddressDetail(), LocalDateTime.now(), LocalDateTime.now(), cafeRequest.getImageUrl());
+        CafeResponse cafeResponse = new CafeResponse(1L, cafeRequest.getCafeName(), cafeRequest.getAddress(), cafeRequest.getAddressDetail(), LocalDateTime.now(), LocalDateTime.now(), cafeRequest.getImageUrl());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(cafeResponse);
@@ -40,7 +40,7 @@ public class CafeController {
     // 오늘의 카페 메뉴 - 생성
     @PostMapping("{id}/menus")
     ResponseEntity<CafeMenuResponse> createDailyMenu(@PathVariable Long id, @RequestBody CafeMenuRequest menuRequest){
-        CafeMenuResponse response = new CafeMenuResponse(id, "cafe", "서울시 강남구 강남대로 889", "서울시 강남구", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", menuRequest.getDescription(), menuRequest.getMenu());
+        CafeMenuResponse response = new CafeMenuResponse(id, "cafe", "서울시 강남구 강남대로 889", "서울시 강남구", menuRequest.getDescription(), LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", menuRequest.getMenu());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(response);
@@ -49,25 +49,17 @@ public class CafeController {
     // 오늘의 카페 메뉴 - 조회
     @GetMapping("{id}/menus")
     ResponseEntity<CafeMenuResponse> getDailyMenu(@PathVariable Long id){
-        List<CategoryDto> menu = new ArrayList<>();
-        List<ItemDto> items1 = new ArrayList<>();
-        ItemDto item1 = new ItemDto("오레오", 3000, 20);
-        ItemDto item2 = new ItemDto("군옥수수", 3500, 25);
-        items1.add(item1);
-        items1.add(item2);
-        CategoryDto category1 = new CategoryDto("마카롱", items1);
+        List<ItemDto> menu = new ArrayList<>();
+        ItemDto item1 = new ItemDto("오레오", 1L, 3000, 20);
+        ItemDto item2 = new ItemDto("군옥수수", 1L, 3500, 25);
+        ItemDto item3 = new ItemDto("솔티카라멜", 2L, 2500, 10);
+        ItemDto item4 = new ItemDto("무화과", 2L, 3000, 15);
+        menu.add(item1);
+        menu.add(item2);
+        menu.add(item3);
+        menu.add(item4);
 
-        List<ItemDto> items2 = new ArrayList<>();
-        ItemDto item3 = new ItemDto("솔티카라멜", 2500, 10);
-        ItemDto item4 = new ItemDto("무화과", 3000, 15);
-        items1.add(item3);
-        items1.add(item4);
-        CategoryDto category2 = new CategoryDto("휘낭시에", items1);
-
-        menu.add(category1);
-        menu.add(category2);
-
-        CafeMenuResponse response = new CafeMenuResponse(id, "cafe", "서울시 강남구 강남대로 889", "서울시 강남구", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", "오랜만에 앵그리 군옥수수가 나왔어요~", menu);
+        CafeMenuResponse response = new CafeMenuResponse(id, "cafe", "서울시 강남구 강남대로 889", "서울시 강남구", "오랜만에 앵그리 군옥수수가 나왔어요~", LocalDateTime.now(), LocalDateTime.now(), "https://picsum.photos/200/300", menu);
 
         return ResponseEntity.ok(response);
     }

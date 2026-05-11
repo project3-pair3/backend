@@ -6,7 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ItemDto {
-    String name;
+    String itemName;
+    Long typeId;
     Integer cost;
     Integer stock;
 }

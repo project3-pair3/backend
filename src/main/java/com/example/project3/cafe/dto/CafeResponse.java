@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CafeResponse {
     Long id;
-    String name;
+    String cafeName;
     String address;
     String addressDetail;
     LocalDateTime open;

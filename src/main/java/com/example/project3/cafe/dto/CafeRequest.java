@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class CafeRequest {
-    String name;
+    String cafeName;
     String address;
     String addressDetail;
     LocalDateTime open;

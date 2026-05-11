@@ -13,9 +13,9 @@ public class CafeMenuResponse {
     String cafeName;
     String address;
     String addressDetail;
+    String description;
     LocalDateTime open;
     LocalDateTime close;
     String imageUrl;
-    String description;
-    List<CategoryDto> menu;
+    List<ItemDto> menu;
 }

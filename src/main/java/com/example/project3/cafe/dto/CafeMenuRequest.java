@@ -8,6 +8,6 @@ import java.util.List;
 public class CafeMenuRequest {
     String imageUrl;
     String description;
-    List<CategoryDto> menu;
+    List<ItemDto> menu;
 }
 
