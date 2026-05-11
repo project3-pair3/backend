@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: project3
+
+  # H2 콘솔 설정
+  h2:
+    console:
+      enabled: true
+  # H2 데이터베이스 설정
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  # JPA 설정
+  jpa:
+    defer-datasource-initialization: true # 중요: Hibernate가 테이블을 만든 후 data.sql이 실행되게 함
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  sql:
+    init:
+      mode: always # 항상 SQL 파일을 실행함
+

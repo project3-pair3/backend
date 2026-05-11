@@ -1,7 +1,7 @@
 package com.example.project3.cafe.controller;
 
 import com.example.project3.cafe.dto.*;
-import lombok.extern.slf4j.Slf4j;
+import com.example.project3.cafe.service.CafeServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +13,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/cafes")
 public class CafeController {
+    CafeServiceImpl cafeService;
+
+    CafeController(CafeServiceImpl cafeService){
+        this.cafeService = cafeService;
+    }
+
     // 카페 생성 - 테스트 API
     @PostMapping
     ResponseEntity<CafeResponse> createCafe(@RequestBody CafeRequest cafeRequest) {
-        CafeResponse cafeResponse = new CafeResponse(1L, cafeRequest.getCafeName(), cafeRequest.getAddressCity(), cafeRequest.getAddressDistrict(), cafeRequest.getAddressDetail(), LocalDateTime.now(), LocalDateTime.now(), cafeRequest.getImageUrl(), 10, LocalDateTime.now());
+        CafeResponse cafeResponse = cafeService.createCafe(cafeRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(cafeResponse);

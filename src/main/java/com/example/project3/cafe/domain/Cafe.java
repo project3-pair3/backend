@@ -1,0 +1,55 @@
+package com.example.project3.cafe.domain;
+
+import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Builder
+public class Cafe {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String cafeName;
+
+    @Column(nullable = false)
+    private String addressCity;
+
+    @Column(nullable = false)
+    private String addressDistrict;
+
+    @Column(nullable = false)
+    private String addressDetail;
+
+    private String description;
+
+    @Column(name = "opening_time")
+    private LocalDateTime open;
+
+    @Column(name = "closing_time")
+    private LocalDateTime close;
+
+    @Column(nullable = false)
+    private String imageUrl;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+}
