@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter @Setter
 @AllArgsConstructor
@@ -17,8 +18,8 @@ public class CafeResponse {
     String addressCity;
     String addressDistrict;
     String addressDetail;
-    LocalDateTime open;
-    LocalDateTime close;
+    LocalTime open;
+    LocalTime close;
     String imageUrl;
     Integer totalCount;
     LocalDateTime createdAt;

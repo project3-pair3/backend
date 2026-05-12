@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -33,10 +34,10 @@ public class Cafe {
     private String description;
 
     @Column(name = "opening_time")
-    private LocalDateTime open;
+    private LocalTime open;
 
     @Column(name = "closing_time")
-    private LocalDateTime close;
+    private LocalTime close;
 
     @Column(nullable = false)
     private String imageUrl;

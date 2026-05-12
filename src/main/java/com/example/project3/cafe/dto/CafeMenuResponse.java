@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -19,8 +20,8 @@ public class CafeMenuResponse {
     String addressDistrict;
     String addressDetail;
     String description;
-    LocalDateTime open;
-    LocalDateTime close;
+    LocalTime open;
+    LocalTime close;
     String imageUrl;
     List<ItemDto> menu;
 
