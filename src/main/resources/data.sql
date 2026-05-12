@@ -1,10 +1,3 @@
--- 메뉴 카테고리
-INSERT INTO menu_category (name) VALUES ('cake');
-INSERT INTO menu_category (name) VALUES ('macaron');
-INSERT INTO menu_category (name) VALUES ('tart');
-INSERT INTO menu_category (name) VALUES ('pudding');
-INSERT INTO menu_category (name) VALUES ('cookie');
-
 -- 카페 데이터 삽입
 INSERT INTO cafe (cafe_name, address_city, address_district, address_detail, description, opening_time, closing_time, image_url, created_at, updated_at)
 VALUES ('스타리 카페', '서울시', '강남구', '테헤란로 123', '도심 속 조용한 휴식 공간입니다.', '09:00:00', '22:00:00', 'https://images.unsplash.com/photo-1509042239860-f550ce710b93', '2026-05-11 05:21:52', NOW());
@@ -17,22 +10,22 @@ VALUES ('오션 뷰 커피', '서울시', '강남구', '강남대로102길 21 �
 
 -- 메뉴 데이터 삽입
 -- 1번 카페 (스타리 카페) 메뉴
-INSERT INTO menu (name, cost, stock, cafe_id, menu_category_id, created_at, updated_at)
-VALUES ('조각 치즈 케이크', 6500, 10, 1, 1, '2026-05-12 05:21:52', NOW());
+INSERT INTO menu (name, cost, stock, cafe_id, type, created_at, updated_at)
+VALUES ('조각 치즈 케이크', 6500, 10, 1, 'CAKE', '2026-05-12 05:21:52', NOW());
 
-INSERT INTO menu (name, cost, stock, cafe_id, menu_category_id, created_at, updated_at)
-VALUES ('초코칩 쿠키', 3000, 20, 1, 5, '2026-05-12 05:21:52', NOW());
+INSERT INTO menu (name, cost, stock, cafe_id, type, created_at, updated_at)
+VALUES ('초코칩 쿠키', 3000, 20, 1, 'COOKIE', '2026-05-12 05:21:52', NOW());
 
 -- 2번 카페 (그린 리프 카페) 메뉴
-INSERT INTO menu (name, cost, stock, cafe_id, menu_category_id, created_at, updated_at)
-VALUES ('산딸기 마카롱', 2800, 15, 2, 2, '2026-05-12 05:21:52', NOW());
+INSERT INTO menu (name, cost, stock, cafe_id, type, created_at, updated_at)
+VALUES ('산딸기 마카롱', 2800, 15, 2, 'MACARON', '2026-05-12 05:21:52', NOW());
 
-INSERT INTO menu (name, cost, stock, cafe_id, menu_category_id, created_at, updated_at)
-VALUES ('에그 타르트', 3500, 12, 2, 3, '2026-05-12 05:21:52', NOW());
+INSERT INTO menu (name, cost, stock, cafe_id, type, created_at, updated_at)
+VALUES ('에그 타르트', 3500, 12, 2, 'TART', '2026-05-12 05:21:52', NOW());
 
 -- 3번 카페 (오션 뷰 커피) 메뉴
-INSERT INTO menu (name, cost, stock, cafe_id, menu_category_id, created_at, updated_at)
-VALUES ('커스터드 푸딩', 4500, 8, 3, 4, '2026-05-12 05:21:52', NOW());
+INSERT INTO menu (name, cost, stock, cafe_id, type, created_at, updated_at)
+VALUES ('커스터드 푸딩', 4500, 8, 3, 'PUDDING', '2026-05-12 05:21:52', NOW());
 
-INSERT INTO menu (name, cost, stock, cafe_id, menu_category_id, created_at, updated_at)
-VALUES ('블루베리 타르트', 7000, 5, 3, 3, '2026-05-12 05:21:52', NOW());
+INSERT INTO menu (name, cost, stock, cafe_id, type, created_at, updated_at)
+VALUES ('블루베리 타르트', 7000, 5, 3, 'TART', '2026-05-12 05:21:52', NOW());
