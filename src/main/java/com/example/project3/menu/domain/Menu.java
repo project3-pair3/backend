@@ -1,7 +1,6 @@
 package com.example.project3.menu.domain;
 
 import com.example.project3.cafe.domain.Cafe;
-import com.example.project3.menuCategory.domain.MenuCategory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,6 +20,10 @@ public class Menu {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MenuCategory type;
+
     private Long cost;
 
     private Integer stock;
@@ -28,10 +31,6 @@ public class Menu {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cafe_id", nullable = false)
     Cafe cafe;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_category_id", nullable = false)
-    MenuCategory menuCategory;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

@@ -5,8 +5,6 @@ import com.example.project3.cafe.dto.*;
 import com.example.project3.cafe.repository.CafeRepository;
 import com.example.project3.menu.domain.Menu;
 import com.example.project3.menu.repository.MenuRepository;
-import com.example.project3.menuCategory.domain.MenuCategory;
-import com.example.project3.menuCategory.repository.MenuCategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +19,10 @@ import java.util.List;
 public class CafeServiceImpl implements CafeService {
     CafeRepository cafeRepository;
     MenuRepository menuRepository;
-    MenuCategoryRepository menuCategoryRepository;
 
-    CafeServiceImpl(CafeRepository cafeRepository, MenuRepository menuRepository, MenuCategoryRepository menuCategoryRepository){
+    CafeServiceImpl(CafeRepository cafeRepository, MenuRepository menuRepository){
         this.cafeRepository = cafeRepository;
         this.menuRepository = menuRepository;
-        this.menuCategoryRepository = menuCategoryRepository;
     }
 
     public CafeResponse createCafe(CafeRequest cafeRequest) {
@@ -101,16 +97,12 @@ public class CafeServiceImpl implements CafeService {
         List<ItemDto> menuList = menuRequest.getMenu();
         List<ItemDto> newItemDtoList = new ArrayList<>();
         for(ItemDto itemDto : menuList){
-            // 각 itemDto를 menu에 저장하기
-            MenuCategory menuCategory = menuCategoryRepository.findById(itemDto.getTypeId())
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 MenuCategory 입니다: " + itemDto.getTypeId()));
-
             Menu requestMenu = Menu.builder()
                     .name(itemDto.getItemName())
                     .cost(itemDto.getCost())
                     .stock(itemDto.getStock())
                     .cafe(newCafe)
-                    .menuCategory(menuCategory)
+                    .type(itemDto.getType())
                     .build();
             Menu newMenu = menuRepository.save(requestMenu);
 
@@ -140,7 +132,7 @@ public class CafeServiceImpl implements CafeService {
         for(Menu menu : menuList){
             ItemDto item = ItemDto.builder()
                     .itemName(menu.getName())
-                    .typeId(menu.getMenuCategory().getId())
+                    .type(menu.getType())
                     .cost(menu.getCost())
                     .stock(menu.getStock())
                     .build();

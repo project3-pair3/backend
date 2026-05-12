@@ -1,6 +1,7 @@
 package com.example.project3.cafe.dto;
 
 import com.example.project3.menu.domain.Menu;
+import com.example.project3.menu.domain.MenuCategory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,14 +11,14 @@ import lombok.Getter;
 @Builder
 public class ItemDto {
     String itemName;
-    Long typeId;
+    MenuCategory type;
     Long cost;
     Integer stock;
 
     public static ItemDto from(Menu menu) {
         return ItemDto.builder()
                 .itemName(menu.getName())
-                .typeId(menu.getMenuCategory().getId())
+                .type(menu.getType())
                 .cost(menu.getCost())
                 .stock(menu.getStock())
                 .build();

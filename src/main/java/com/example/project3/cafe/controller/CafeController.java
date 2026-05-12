@@ -21,13 +21,13 @@ public class CafeController {
     }
 
     // 카페 생성 - 테스트 API
-    @PostMapping
-    ResponseEntity<CafeResponse> createCafe(@RequestBody CafeRequest cafeRequest) {
-        CafeResponse cafeResponse = cafeService.createCafe(cafeRequest);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(cafeResponse);
-    }
+//    @PostMapping
+//    ResponseEntity<CafeResponse> createCafe(@RequestBody CafeRequest cafeRequest) {
+//        CafeResponse cafeResponse = cafeService.createCafe(cafeRequest);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED)
+//                .body(cafeResponse);
+//    }
 
     // 카페 리스트 조회 (필터링 무관!)
     @GetMapping
