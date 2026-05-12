@@ -12,11 +12,11 @@ public class CafeRequest {
     String addressCity;
     String addressDistrict;
     String addressDetail;
-    @Schema(type = "string", example = "09:00:00", description = "오픈 시간")
-    @JsonFormat(pattern = "HH:mm:ss")
+    @Schema(type = "string", example = "09:00", description = "오픈 시간")
+    @JsonFormat(pattern = "HH:mm")
     LocalTime open;
-    @Schema(type = "string", example = "18:00:00", description = "마감 시간")
-    @JsonFormat(pattern = "HH:mm:ss")
+    @Schema(type = "string", example = "18:00", description = "마감 시간")
+    @JsonFormat(pattern = "HH:mm")
     LocalTime close;
     String imageUrl;
 }
