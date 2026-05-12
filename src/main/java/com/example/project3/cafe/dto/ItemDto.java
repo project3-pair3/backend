@@ -2,6 +2,7 @@ package com.example.project3.cafe.dto;
 
 import com.example.project3.menu.domain.Menu;
 import com.example.project3.menu.domain.MenuCategory;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import lombok.Getter;
 @Builder
 public class ItemDto {
     String itemName;
+    @JsonProperty("typeId")
     MenuCategory type;
     Long cost;
     Integer stock;

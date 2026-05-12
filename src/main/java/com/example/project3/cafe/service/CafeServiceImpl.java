@@ -99,10 +99,10 @@ public class CafeServiceImpl implements CafeService {
         for(ItemDto itemDto : menuList){
             Menu requestMenu = Menu.builder()
                     .name(itemDto.getItemName())
+                    .type(itemDto.getType())
                     .cost(itemDto.getCost())
                     .stock(itemDto.getStock())
                     .cafe(newCafe)
-                    .type(itemDto.getType())
                     .build();
             Menu newMenu = menuRepository.save(requestMenu);
 
