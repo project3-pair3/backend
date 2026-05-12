@@ -22,7 +22,7 @@ public class CafeResponse {
     LocalTime close;
     String imageUrl;
     Integer totalCount;
-    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 
     // Entity -> Dto 변환
     // TODO: totalCount 추가하기
@@ -36,7 +36,7 @@ public class CafeResponse {
                 .open(cafe.getOpen())
                 .close(cafe.getClose())
                 .imageUrl(cafe.getImageUrl())
-                .createdAt(cafe.getCreatedAt())
+                .updatedAt(cafe.getUpdatedAt())
                 .build();
     }
 }

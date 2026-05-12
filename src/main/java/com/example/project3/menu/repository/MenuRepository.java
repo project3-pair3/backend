@@ -7,5 +7,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MenuRepository extends JpaRepository<Menu, Long> {
+    List<Menu> findByCafeIdAndUpdatedAtBetween(Long cafeId, LocalDateTime start, LocalDateTime end);
     List<Menu> findByCafeIdAndCreatedAtBetween(Long cafeId, LocalDateTime start, LocalDateTime end);
 }

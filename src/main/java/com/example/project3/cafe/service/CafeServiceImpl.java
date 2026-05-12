@@ -44,6 +44,43 @@ public class CafeServiceImpl implements CafeService {
         return CafeResponse.from(newCafe);
     }
 
+    // 카페 리스트 조회 (필터링 무관!)
+    public List<CafeResponse> getCafeList() {
+        // 반환할 것 (List -> CafeResponse)
+        // Cafe, !!!totalCount (카페의 Menu 별 stock 합계)
+
+        // 모든 카페를 불러온다. 단, 당일 updatedAt 내용만 조회
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime nowOfDay = LocalDate.now().atTime(LocalTime.MAX);
+        List<Cafe> cafeList = cafeRepository.findAllByUpdatedAtBetween(startOfDay, nowOfDay);
+
+        List<CafeResponse> responseList = new ArrayList<>();
+        for(Cafe cafe : cafeList) {
+            Integer totalCount = 0;
+            List<Menu> menuList = menuRepository.findByCafeIdAndUpdatedAtBetween(cafe.getId(), startOfDay, nowOfDay);
+            for(Menu menu : menuList) {
+                totalCount += menu.getStock();
+            }
+
+            CafeResponse response = CafeResponse.builder()
+                    .id(cafe.getId())
+                    .cafeName(cafe.getCafeName())
+                    .addressCity(cafe.getAddressCity())
+                    .addressDistrict(cafe.getAddressDistrict())
+                    .addressDetail(cafe.getAddressDetail())
+                    .open(cafe.getOpen())
+                    .close(cafe.getClose())
+                    .imageUrl(cafe.getImageUrl())
+                    .totalCount(totalCount)
+                    .updatedAt(cafe.getUpdatedAt())
+                    .build();
+
+            responseList.add(response);
+        }
+
+        return responseList;
+    }
+
     @Transactional
     public CafeMenuResponse createDailyMenu(CafeMenuRequest menuRequest) {
         // Cafe 생성
