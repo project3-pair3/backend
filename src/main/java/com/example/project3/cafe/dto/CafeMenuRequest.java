@@ -15,11 +15,11 @@ public class CafeMenuRequest {
     String addressDistrict;
     String addressDetail;
     String description;
-    @Schema(type = "string", example = "09:00", description = "오픈 시간")
-    @JsonFormat(pattern = "HH:mm")
+    @Schema(type = "string", example = "09:00:00", description = "오픈 시간")
+    @JsonFormat(pattern = "HH:mm:ss")
     LocalTime open;
-    @Schema(type = "string", example = "18:00", description = "마감 시간")
-    @JsonFormat(pattern = "HH:mm")
+    @Schema(type = "string", example = "18:00:00", description = "마감 시간")
+    @JsonFormat(pattern = "HH:mm:ss")
     LocalTime close;
     String imageUrl;
     List<ItemDto> menu;
