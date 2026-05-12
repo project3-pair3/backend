@@ -3,7 +3,8 @@ package com.example.project3.user.dto;
 import lombok.Getter;
 
 @Getter
-public class UserLoginRequest {
+public class UserSignupRequest {
     String userId;
     String password;
+    String nickname;
 }
