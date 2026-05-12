@@ -4,14 +4,14 @@ import com.example.project3.cafe.domain.Cafe;
 import com.example.project3.menuCategory.domain.MenuCategory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Menu {
     @Id
