@@ -1,5 +1,6 @@
 package com.example.project3.cafe.domain;
 
+import com.example.project3.user.domain.User;
 import com.example.project3.menu.domain.Menu;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -22,6 +23,10 @@ public class Cafe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    User user;
 
     @Column(nullable = false)
     private String cafeName;
@@ -64,5 +69,18 @@ public class Cafe {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updateInfo(String cafeName, String addressCity, String addressDistrict,
+                           String addressDetail, String description,
+                           LocalTime open, LocalTime close, String imageUrl) {
+        this.cafeName = cafeName;
+        this.addressCity = addressCity;
+        this.addressDistrict = addressDistrict;
+        this.addressDetail = addressDetail;
+        this.description = description;
+        this.open = open;
+        this.close = close;
+        this.imageUrl = imageUrl;
     }
 }

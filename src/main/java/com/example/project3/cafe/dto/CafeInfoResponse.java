@@ -1,45 +1,45 @@
 package com.example.project3.cafe.dto;
 
 import com.example.project3.cafe.domain.Cafe;
+import com.example.project3.menu.domain.Menu;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
-@Getter @Setter
+@Getter
 @AllArgsConstructor
 @Builder
-public class CafeResponse {
-    Long id;
+public class CafeInfoResponse {
+    int statusCode; // 1, 2, 3
     String cafeName;
     String addressCity;
     String addressDistrict;
     String addressDetail;
+    String description;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     LocalTime open;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     LocalTime close;
     String imageUrl;
-    Integer totalCount;
-    LocalDateTime updatedAt;
+    List<ItemDto> menu;
 
-    // Entity -> Dto 변환
-    // TODO: totalCount 추가하기
-    public static CafeResponse from(Cafe cafe){
-        return CafeResponse.builder()
-                .id(cafe.getId())
+    public static CafeInfoResponse from(Cafe cafe, List<ItemDto> menuList, int statusCode) {
+        return CafeInfoResponse.builder()
+                .statusCode(statusCode)
                 .cafeName(cafe.getCafeName())
                 .addressCity(cafe.getAddressCity())
                 .addressDistrict(cafe.getAddressDistrict())
                 .addressDetail(cafe.getAddressDetail())
+                .description(cafe.getDescription())
                 .open(cafe.getOpen())
                 .close(cafe.getClose())
                 .imageUrl(cafe.getImageUrl())
-                .updatedAt(cafe.getUpdatedAt())
+                .menu(menuList)
                 .build();
     }
 }
