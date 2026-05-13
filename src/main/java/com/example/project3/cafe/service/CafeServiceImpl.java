@@ -80,7 +80,7 @@ public class CafeServiceImpl implements CafeService {
     }
 
     @Transactional
-    public CafeMenuResponse createDailyMenu(CafeMenuRequest menuRequest) {
+    public CafeMenuResponse createDailyMenu(CafeMenuRequest menuRequest, Long userId) {
         // Cafe 생성
         Cafe requestCafe = Cafe.builder()
                 .cafeName(menuRequest.getCafeName())

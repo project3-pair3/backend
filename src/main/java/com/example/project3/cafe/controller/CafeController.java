@@ -55,14 +55,14 @@ public class CafeController {
 //    }
 
     // 오늘의 카페 메뉴 - 생성
-    @Operation(summary = "카드 생성", description = "[카드 생성 페이지] 카페 정보, 메뉴 폼 내용을 요청하면 저장합니다. 추 후 삭제")
+    /*@Operation(summary = "카드 생성", description = "[카드 생성 페이지] 카페 정보, 메뉴 폼 내용을 요청하면 저장합니다. 추 후 삭제")
     @PostMapping("/menus")
     ResponseEntity<CafeMenuResponse> createDailyMenu(@RequestBody CafeMenuRequest menuRequest){
         CafeMenuResponse response = cafeService.createDailyMenu(menuRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(response);
-    }
+    }*/
 
     // 오늘의 카페 메뉴 - 폼 데이터 삽입용 조회
     @Operation(summary = "이전 카페 폼 데이터 조회", description = "[카드 생성 페이지] 카페 정보, 메뉴 폼 내용을 요청합니다.")
@@ -74,6 +74,14 @@ public class CafeController {
     }
 
     // 오늘의 카페 메뉴 - 폼 데이터 작성하고 제출
+    @Operation(summary = "카페 폼 데이터 제출", description = "[카드 생성 페이지] 카페 정보, 메뉴 폼 내용을 요청하면 저장합니다.")
+    @PutMapping("/update/{userId}") // userId : user 의 PK
+    ResponseEntity<CafeMenuResponse> createDailyMenu(@RequestBody CafeMenuRequest menuRequest, @PathVariable Long userId) {
+        CafeMenuResponse response = cafeService.createDailyMenu(menuRequest, userId);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(response);
+    }
 
 
     // 오늘의 카페 메뉴 - 조회
