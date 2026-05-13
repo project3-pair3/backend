@@ -115,7 +115,8 @@ public class CafeServiceImpl implements CafeService {
         for(Cafe cafe : cafeList) {
             Integer totalCount = 0;
             List<Menu> menuList = menuRepository.findByCafeIdAndUpdatedAtBetween(cafe.getId(), startOfDay, nowOfDay);
-            for(Menu menu : menuList) {
+            for(Menu menu : menuList) { // stock 은 null이 정상값으로 올 수 있음!
+                if (menu.getStock() == null) continue;
                 totalCount += menu.getStock();
             }
 
@@ -148,12 +149,12 @@ public class CafeServiceImpl implements CafeService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다: "+userId));
 
-        // 1. Cafe 처리 (있으면 수정, 없으면 신규 생성)
+        // Cafe 처리 (있으면 수정, 없으면 신규 생성)
         Cafe targetCafe;
         Optional<Cafe> existingCafeOpt = cafeRepository.findByUserId(userId);
 
         if (existingCafeOpt.isPresent()) {
-            // [수정] 이미 카페가 존재하면 값만 업데이트 (Dirty Checking으로 인해 자동 UPDATE 쿼리 발생)
+            // 이미 카페가 존재하면 값만 업데이트 (Dirty Checking으로 인해 자동 UPDATE 쿼리 발생)
             targetCafe = existingCafeOpt.get();
             targetCafe.updateInfo(
                     menuRequest.getCafeName(),
@@ -165,6 +166,9 @@ public class CafeServiceImpl implements CafeService {
                     menuRequest.getClose(),
                     menuRequest.getImageUrl()
             );
+
+            // cafe DB 가 아닌 menu 수정되더라도 cafe의 updatedAt 무조건 수정
+            targetCafe.setUpdatedAt();
         } else {
             // [신규 등록] 카페가 없으면 새로 생성해서 저장
             targetCafe = Cafe.builder()
@@ -178,6 +182,8 @@ public class CafeServiceImpl implements CafeService {
                     .close(menuRequest.getClose())
                     .imageUrl(menuRequest.getImageUrl())
                     .build();
+
+            targetCafe.setUpdatedAt();
 
             targetCafe = cafeRepository.save(targetCafe);
         }
@@ -196,13 +202,15 @@ public class CafeServiceImpl implements CafeService {
                     .type(itemDto.getType())
                     .cost(itemDto.getCost())
                     .stock(itemDto.getStock())
-                    .cafe(targetCafe) // 👈 기존의 newCafe 대신 targetCafe를 넣습니다.
+                    .cafe(targetCafe) // 기존의 newCafe 대신 targetCafe를 넣습니다.
                     .build();
             Menu newMenu = menuRepository.save(requestMenu);
 
             ItemDto newItemDto = ItemDto.from(newMenu);
             newItemDtoList.add(newItemDto);
         }
+
+
 
         return CafeMenuResponse.from(targetCafe, newItemDtoList);
     }

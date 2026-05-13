@@ -71,6 +71,10 @@ public class Cafe {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void setUpdatedAt() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
     public void updateInfo(String cafeName, String addressCity, String addressDistrict,
                            String addressDetail, String description,
                            LocalTime open, LocalTime close, String imageUrl) {
