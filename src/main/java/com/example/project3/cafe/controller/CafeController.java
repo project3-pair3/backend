@@ -2,6 +2,7 @@ package com.example.project3.cafe.controller;
 
 import com.example.project3.cafe.dto.*;
 import com.example.project3.cafe.service.CafeServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class CafeController {
 //                .body(cafeResponse);
 //    }
 
+    @Operation(summary = "카페 리스트 조회 (필터링x)", description = "[메인 페이지] 당일 추가된 모든 카드 리스트를 반환합니다. (필터링 없음)")
     // 카페 리스트 조회 (필터링 무관!)
     @GetMapping
     ResponseEntity<List<CafeResponse>> getCafeList(){
@@ -52,6 +54,7 @@ public class CafeController {
 //    }
 
     // 오늘의 카페 메뉴 - 생성
+    @Operation(summary = "카드 생성", description = "[카드 생성 페이지] 카페 정보, 메뉴 폼 내용을 요청하면 저장합니다.")
     @PostMapping("/menus")
     ResponseEntity<CafeMenuResponse> createDailyMenu(@RequestBody CafeMenuRequest menuRequest){
         CafeMenuResponse response = cafeService.createDailyMenu(menuRequest);
@@ -61,6 +64,7 @@ public class CafeController {
     }
 
     // 오늘의 카페 메뉴 - 조회
+    @Operation(summary = "메인페이지에서 카드 조회", description = "[상세 페이지] 카페 아이디를 요청하면 카드의 상세 내용을 반환합니다. (메인 페이지에서 라우팅 되는 페이지)")
     @GetMapping("{id}/menus")
     ResponseEntity<CafeMenuResponse> getDailyMenu(@PathVariable Long id){
         CafeMenuResponse response = cafeService.getDailyMenu(id);
