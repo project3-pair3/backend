@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CafeService {
     public CafeResponse createCafe(CafeRequest cafeRequest);
-    public List<CafeResponse> getCafeList();
+//    public List<CafeResponse> getCafeList();
     public CafeMenuResponse createDailyMenu(CafeMenuRequest menuRequest, Long userId);
     public CafeMenuResponse getDailyMenu(Long cafeId);
 

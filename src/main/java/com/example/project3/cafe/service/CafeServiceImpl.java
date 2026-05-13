@@ -91,13 +91,18 @@ public class CafeServiceImpl implements CafeService {
         // 필터링 [디폴트]
         // categoryId: 0 (= 전체) -> 필터링에서 type 제외
         // addressCity: 서울시
-        // addressDistrict: null (= 전체) -> 필터링에서 addressDistrict 제외
+        // addressDistrict: 전체 -> 필터링에서 addressDistrict 제외
         // listingType: basic (= DB에서 받는 그대로의 값 순서) / recentlyUpdated
 
-        // 1. 파라미터 체크 - categoryId
+        // 1. 파라미터 체크
+        // categoryId
         MenuCategory category = null; // null이면 '전체 조회'로 간주
         if (categoryId != 0) {
             category = MenuCategory.fromTypeId(categoryId);
+        }
+        // addressDistrict
+        if (district.equals("전체")) {
+            district = null;
         }
 
         // 2. 동적 쿼리 생성
