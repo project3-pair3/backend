@@ -11,4 +11,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     List<Menu> findByCafeIdAndCreatedAtBetween(Long cafeId, LocalDateTime start, LocalDateTime end);
 
     List<Menu> findByCafeId(Long cafeId);
+
+    void deleteAllByCafeId(Long cafeId);
 }

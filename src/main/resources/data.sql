@@ -21,7 +21,7 @@ VALUES ('오션 뷰 커피', 3, '서울시', '강남구', '강남대로102길 21
 -- 메뉴 데이터 삽입
 -- 1번 카페 (스타리 카페) 메뉴
 INSERT INTO menu (name, cost, stock, cafe_id, type, created_at, updated_at)
-VALUES ('조각 치즈 케이크', 6500, 10, 1, 'CAKE', '2026-05-12 05:21:52', NOW());
+VALUES ('조각 치즈 케이크', 6500, 10, 1, 'CAKE', '2026-05-13 05:21:52', NOW());
 
 INSERT INTO menu (name, cost, stock, cafe_id, type, created_at, updated_at)
 VALUES ('초코칩 쿠키', 3000, 20, 1, 'COOKIE', '2026-05-12 05:21:52', NOW());

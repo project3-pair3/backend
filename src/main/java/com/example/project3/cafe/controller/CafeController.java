@@ -86,7 +86,7 @@ public class CafeController {
 
     // 오늘의 카페 메뉴 - 조회
     @Operation(summary = "메인페이지에서 카드 조회", description = "[상세 페이지] 카페 아이디를 요청하면 카드의 상세 내용을 반환합니다. (메인 페이지에서 라우팅 되는 페이지)")
-    @GetMapping("{id}/menus")
+    @GetMapping("{id}/menus") // id : cafe 의 pk
     ResponseEntity<CafeMenuResponse> getDailyMenu(@PathVariable Long id){
         CafeMenuResponse response = cafeService.getDailyMenu(id);
 

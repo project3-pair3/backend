@@ -1,6 +1,7 @@
 package com.example.project3.cafe.dto;
 
 import com.example.project3.cafe.domain.Cafe;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,9 @@ public class CafeResponse {
     String addressCity;
     String addressDistrict;
     String addressDetail;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     LocalTime open;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     LocalTime close;
     String imageUrl;
     Integer totalCount;

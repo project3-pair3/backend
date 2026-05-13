@@ -88,40 +88,63 @@ public class CafeServiceImpl implements CafeService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다: "+userId));
 
-        // Cafe 생성
-        Cafe requestCafe = Cafe.builder()
-                .cafeName(menuRequest.getCafeName())
-                .user(user)
-                .addressCity(menuRequest.getAddressCity())
-                .addressDistrict(menuRequest.getAddressDistrict())
-                .addressDetail(menuRequest.getAddressDetail())
-                .description(menuRequest.getDescription())
-                .open(menuRequest.getOpen())
-                .close(menuRequest.getClose())
-                .imageUrl(menuRequest.getImageUrl())
-                .build();
+        // 1. Cafe 처리 (있으면 수정, 없으면 신규 생성)
+        Cafe targetCafe;
+        Optional<Cafe> existingCafeOpt = cafeRepository.findByUserId(userId);
 
-        Cafe newCafe = cafeRepository.save(requestCafe);
+        if (existingCafeOpt.isPresent()) {
+            // [수정] 이미 카페가 존재하면 값만 업데이트 (Dirty Checking으로 인해 자동 UPDATE 쿼리 발생)
+            targetCafe = existingCafeOpt.get();
+            targetCafe.updateInfo(
+                    menuRequest.getCafeName(),
+                    menuRequest.getAddressCity(),
+                    menuRequest.getAddressDistrict(),
+                    menuRequest.getAddressDetail(),
+                    menuRequest.getDescription(),
+                    menuRequest.getOpen(),
+                    menuRequest.getClose(),
+                    menuRequest.getImageUrl()
+            );
+        } else {
+            // [신규 등록] 카페가 없으면 새로 생성해서 저장
+            targetCafe = Cafe.builder()
+                    .cafeName(menuRequest.getCafeName())
+                    .user(user)
+                    .addressCity(menuRequest.getAddressCity())
+                    .addressDistrict(menuRequest.getAddressDistrict())
+                    .addressDetail(menuRequest.getAddressDetail())
+                    .description(menuRequest.getDescription())
+                    .open(menuRequest.getOpen())
+                    .close(menuRequest.getClose())
+                    .imageUrl(menuRequest.getImageUrl())
+                    .build();
 
-        // Menu 리스트 생성
+            targetCafe = cafeRepository.save(targetCafe);
+        }
+
+        // 카페 id 와 연관된 모든 menu 데이터 삭제
+        Long cafeId = targetCafe.getId();
+        menuRepository.deleteAllByCafeId(cafeId);
+
+        // 2. Menu 리스트 생성 (기존 로직 유지하되 targetCafe로 연결)
         List<ItemDto> menuList = menuRequest.getMenu();
         List<ItemDto> newItemDtoList = new ArrayList<>();
+
         for(ItemDto itemDto : menuList){
             Menu requestMenu = Menu.builder()
                     .name(itemDto.getItemName())
                     .type(itemDto.getType())
                     .cost(itemDto.getCost())
                     .stock(itemDto.getStock())
-                    .cafe(newCafe)
+                    .cafe(targetCafe) // 👈 기존의 newCafe 대신 targetCafe를 넣습니다.
                     .build();
             Menu newMenu = menuRepository.save(requestMenu);
 
-            // newMenu를 newItemDtoList에 저장하기
             ItemDto newItemDto = ItemDto.from(newMenu);
             newItemDtoList.add(newItemDto);
         }
 
-        return CafeMenuResponse.from(newCafe, newItemDtoList);
+        return CafeMenuResponse.from(targetCafe, newItemDtoList);
     }
 
     public CafeMenuResponse getDailyMenu(Long cafeId) {
@@ -133,7 +156,7 @@ public class CafeServiceImpl implements CafeService {
         // 메뉴 중에 오늘 날짜인 것 모두 추출하기
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime nowOfDay = LocalDate.now().atTime(LocalTime.MAX);
-        List<Menu> menuList= menuRepository.findByCafeIdAndCreatedAtBetween(cafeId, startOfDay, nowOfDay);
+        List<Menu> menuList= menuRepository.findByCafeIdAndUpdatedAtBetween(cafeId, startOfDay, nowOfDay);
         if(menuList.isEmpty()) {
             throw new IllegalArgumentException(cafeId + "에서 새로 등록한 메뉴가 없습니다.");
         }

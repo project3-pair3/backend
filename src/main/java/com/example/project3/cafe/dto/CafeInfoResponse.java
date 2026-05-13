@@ -2,6 +2,7 @@ package com.example.project3.cafe.dto;
 
 import com.example.project3.cafe.domain.Cafe;
 import com.example.project3.menu.domain.Menu;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +21,9 @@ public class CafeInfoResponse {
     String addressDistrict;
     String addressDetail;
     String description;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     LocalTime open;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     LocalTime close;
     String imageUrl;
     List<ItemDto> menu;
