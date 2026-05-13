@@ -5,6 +5,8 @@ import com.example.project3.cafe.dto.*;
 import com.example.project3.cafe.repository.CafeRepository;
 import com.example.project3.menu.domain.Menu;
 import com.example.project3.menu.repository.MenuRepository;
+import com.example.project3.user.domain.User;
+import com.example.project3.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +21,14 @@ import java.util.Optional;
 
 @Service
 public class CafeServiceImpl implements CafeService {
+    private final UserRepository userRepository;
     CafeRepository cafeRepository;
     MenuRepository menuRepository;
 
-    CafeServiceImpl(CafeRepository cafeRepository, MenuRepository menuRepository){
+    CafeServiceImpl(CafeRepository cafeRepository, MenuRepository menuRepository, UserRepository userRepository){
         this.cafeRepository = cafeRepository;
         this.menuRepository = menuRepository;
+        this.userRepository = userRepository;
     }
 
     public CafeResponse createCafe(CafeRequest cafeRequest) {
@@ -81,9 +85,13 @@ public class CafeServiceImpl implements CafeService {
 
     @Transactional
     public CafeMenuResponse createDailyMenu(CafeMenuRequest menuRequest, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다: "+userId));
+
         // Cafe 생성
         Cafe requestCafe = Cafe.builder()
                 .cafeName(menuRequest.getCafeName())
+                .user(user)
                 .addressCity(menuRequest.getAddressCity())
                 .addressDistrict(menuRequest.getAddressDistrict())
                 .addressDetail(menuRequest.getAddressDetail())
