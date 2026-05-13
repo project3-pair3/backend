@@ -1,6 +1,8 @@
 package com.example.project3.cafe.domain;
 
 import com.example.project3.user.domain.User;
+import com.example.project3.menu.domain.Menu;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +11,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -51,6 +55,10 @@ public class Cafe {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cafe")
+    @Builder.Default
+    List<Menu> menuList = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {

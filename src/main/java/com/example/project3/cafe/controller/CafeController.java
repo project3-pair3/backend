@@ -31,28 +31,28 @@ public class CafeController {
 //                .body(cafeResponse);
 //    }
 
-    @Operation(summary = "카페 리스트 조회 (필터링x)", description = "[메인 페이지] 당일 추가된 모든 카드 리스트를 반환합니다. (필터링 없음)")
     // 카페 리스트 조회 (필터링 무관!)
-    @GetMapping
-    ResponseEntity<List<CafeResponse>> getCafeList(){
-        List<CafeResponse> cafeResponseList = cafeService.getCafeList();
-
-        return ResponseEntity.ok(cafeResponseList);
-    }
-
-    // 카페 리스트 조회 (필터링 존재)
-//    @GetMapping
-//    ResponseEntity<List<CafeResponse>> getCafeList(@RequestParam Long categoryId, @RequestParam String addressCity, @RequestParam String addressDistrict, @RequestParam String listingType){
-//        List<CafeResponse> cafeResponseList = new ArrayList<>();
-//        CafeResponse cafe1 = new CafeResponse(1L, "first", "서울시", "강남구", "강남대로 889", LocalTime.of(9, 0), LocalTime.of(13, 0), "https://picsum.photos/200/300", 15, LocalDateTime.now());
-//        CafeResponse cafe2 = new CafeResponse(2L, "second","서울시", "강남구", "강남대로 889", LocalTime.of(11, 0), LocalTime.of(15, 0), "https://picsum.photos/200/300", 16, LocalDateTime.now());
-//        CafeResponse cafe3 = new CafeResponse(3L, "third","서울시", "강남구", "강남대로 889", LocalTime.of(8, 0), LocalTime.of(16, 0), "https://picsum.photos/200/300", 17, LocalDateTime.now());
-//        cafeResponseList.add(cafe1);
-//        cafeResponseList.add(cafe2);
-//        cafeResponseList.add(cafe3);
+//    @Operation(summary = "카페 리스트 조회 (필터링x)", description = "[메인 페이지] 당일 추가된 모든 카드 리스트를 반환합니다. (필터링 없음)")
+//    @GetMapping("/noFilter")
+//    ResponseEntity<List<CafeResponse>> getCafeList(){
+//        List<CafeResponse> cafeResponseList = cafeService.getCafeList();
 //
 //        return ResponseEntity.ok(cafeResponseList);
 //    }
+
+    // 카페 리스트 조회 (필터링 존재)
+    @Operation(summary = "카페 리스트 조회 (필터링O)", description = "[메인 페이지] 당일 추가된 모든 카드 리스트를 반환합니다. (필터링 가능)")
+    @GetMapping
+    ResponseEntity<List<CafeResponse>> getCafeListWithFiltering(
+            @RequestParam(required = false, defaultValue = "0") Integer categoryId,
+            @RequestParam(required = false, defaultValue = "서울시") String addressCity,
+            @RequestParam(required = false) String addressDistrict,
+            @RequestParam(required = false, defaultValue = "basic") String listingType
+    ){
+        List<CafeResponse> cafeResponseList = cafeService.getCafeListWithFiltering(categoryId, addressCity, addressDistrict, listingType);
+
+        return ResponseEntity.ok(cafeResponseList);
+    }
 
     // 오늘의 카페 메뉴 - 생성
     /*@Operation(summary = "카드 생성", description = "[카드 생성 페이지] 카페 정보, 메뉴 폼 내용을 요청하면 저장합니다. 추 후 삭제")

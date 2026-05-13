@@ -4,6 +4,7 @@ import com.example.project3.cafe.domain.Cafe;
 import com.example.project3.cafe.dto.*;
 import com.example.project3.cafe.repository.CafeRepository;
 import com.example.project3.menu.domain.Menu;
+import com.example.project3.menu.domain.MenuCategory;
 import com.example.project3.menu.repository.MenuRepository;
 import com.example.project3.user.domain.User;
 import com.example.project3.user.repository.UserRepository;
@@ -47,15 +48,64 @@ public class CafeServiceImpl implements CafeService {
     }
 
     // 카페 리스트 조회 (필터링 무관!)
-    public List<CafeResponse> getCafeList() {
+//    public List<CafeResponse> getCafeList() {
+//        // 반환할 것 (List -> CafeResponse)
+//        // Cafe, !!!totalCount (카페의 Menu 별 stock 합계)
+//
+//        // 모든 카페를 불러온다. 단, 당일 updatedAt 내용만 조회
+//        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+//        LocalDateTime nowOfDay = LocalDate.now().atTime(LocalTime.MAX);
+//        List<Cafe> cafeList = cafeRepository.findAllByUpdatedAtBetween(startOfDay, nowOfDay);
+//
+//        List<CafeResponse> responseList = new ArrayList<>();
+//        for(Cafe cafe : cafeList) {
+//            Integer totalCount = 0;
+//            List<Menu> menuList = menuRepository.findByCafeIdAndUpdatedAtBetween(cafe.getId(), startOfDay, nowOfDay);
+//            for(Menu menu : menuList) {
+//                totalCount += menu.getStock();
+//            }
+//
+//            CafeResponse response = CafeResponse.builder()
+//                    .id(cafe.getId())
+//                    .cafeName(cafe.getCafeName())
+//                    .addressCity(cafe.getAddressCity())
+//                    .addressDistrict(cafe.getAddressDistrict())
+//                    .addressDetail(cafe.getAddressDetail())
+//                    .open(cafe.getOpen())
+//                    .close(cafe.getClose())
+//                    .imageUrl(cafe.getImageUrl())
+//                    .totalCount(totalCount)
+//                    .updatedAt(cafe.getUpdatedAt())
+//                    .build();
+//
+//            responseList.add(response);
+//        }
+//
+//        return responseList;
+//    }
+
+    public List<CafeResponse> getCafeListWithFiltering(Integer categoryId, String city, String district, String listingType){
         // 반환할 것 (List -> CafeResponse)
         // Cafe, !!!totalCount (카페의 Menu 별 stock 합계)
 
-        // 모든 카페를 불러온다. 단, 당일 updatedAt 내용만 조회
+        // 필터링 [디폴트]
+        // categoryId: 0 (= 전체) -> 필터링에서 type 제외
+        // addressCity: 서울시
+        // addressDistrict: null (= 전체) -> 필터링에서 addressDistrict 제외
+        // listingType: basic (= DB에서 받는 그대로의 값 순서) / recentlyUpdated
+
+        // 1. 파라미터 체크 - categoryId
+        MenuCategory category = null; // null이면 '전체 조회'로 간주
+        if (categoryId != 0) {
+            category = MenuCategory.fromTypeId(categoryId);
+        }
+
+        // 2. 동적 쿼리 생성
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime nowOfDay = LocalDate.now().atTime(LocalTime.MAX);
-        List<Cafe> cafeList = cafeRepository.findAllByUpdatedAtBetween(startOfDay, nowOfDay);
+        List<Cafe> cafeList = cafeRepository.findCafesWithFilters(city, district, category, startOfDay, nowOfDay);
 
+        // 3. 데이터 가공
         List<CafeResponse> responseList = new ArrayList<>();
         for(Cafe cafe : cafeList) {
             Integer totalCount = 0;
@@ -78,6 +128,11 @@ public class CafeServiceImpl implements CafeService {
                     .build();
 
             responseList.add(response);
+        }
+
+        // 4. 정렬
+        if ("recentlyUpdated".equals(listingType)) {
+            responseList.sort((o1, o2) -> o2.getUpdatedAt().compareTo(o1.getUpdatedAt()));
         }
 
         return responseList;

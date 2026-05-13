@@ -11,4 +11,6 @@ public interface CafeService {
     public CafeMenuResponse getDailyMenu(Long cafeId);
 
     public CafeInfoResponse getCafeInfo(Long userId);
+    public List<CafeResponse> getCafeListWithFiltering(Integer categoryId, String addressCity, String addressDistrict, String listingType);
+
 }
