@@ -27,3 +27,15 @@ spring:
     init:
       mode: always # 항상 SQL 파일을 실행함
 
+  cloud:
+    aws:
+      s3:
+        bucket: autoever-project3
+      region:
+        static: ap-northeast-2 # 본인의 버킷 지역
+      stack:
+        auto: false # CloudFormation 스택 자동 생성 방지 (일반적으로 추가 권장)
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+
