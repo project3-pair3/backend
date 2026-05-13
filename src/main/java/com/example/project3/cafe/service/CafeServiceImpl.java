@@ -12,7 +12,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -140,5 +142,61 @@ public class CafeServiceImpl implements CafeService {
         }
 
         return CafeMenuResponse.from(cafe, itemList);
+    }
+
+    // 카페 정보 폼에 불러올 정보
+    @Override
+    public CafeInfoResponse getCafeInfo(Long userId) {
+        Optional<Cafe> optionalCafe = cafeRepository.findByUserId(userId);
+
+        // 카페 등록한 적이 없으면
+        // statusCode = 1, 빈 폼 데이터
+        if (optionalCafe.isEmpty()) {
+            return CafeInfoResponse.builder()
+                    .statusCode(1)
+                    .cafeName("")
+                    .addressCity("")
+                    .addressDistrict("")
+                    .addressDetail("")
+                    .description("")
+                    .open(null)
+                    .close(null)
+                    .imageUrl("")
+                    .menu(Collections.emptyList())
+                    .build();
+        }
+
+        // optionalCafe 에서 Cafe 정보 가져오기
+        Cafe cafe = optionalCafe.get();
+
+        // 해당 카페의 메뉴 리스트 가져오기
+        List<Menu> menuList = menuRepository.findByCafeId(cafe.getId());
+
+        // 메뉴 리스트 포함 ItemDto 리스트로 변환
+        List<ItemDto> itemDtoList = new ArrayList<>();
+        for(Menu menu : menuList) {
+            ItemDto itemDto = ItemDto.builder()
+                    .itemName(menu.getName())
+                    .type(menu.getType())
+                    .cost(menu.getCost())
+                    .stock(menu.getStock())
+                    .build();
+            itemDtoList.add(itemDto);
+        }
+
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime updatedAt = cafe.getUpdatedAt(); // 오늘 시작
+        LocalDateTime nowOfDay = LocalDate.now().atTime(LocalTime.MAX); // 오늘 끝
+
+
+        if (updatedAt.isBefore(startOfDay)) {
+            return CafeInfoResponse.from(cafe, itemDtoList, 2); // 오늘 이전에 등록한 적이 있음
+        } else {
+            if (updatedAt.isBefore(nowOfDay)) // updatedAt 이 "오늘" 범위에 있을 때
+                return CafeInfoResponse.from(cafe, itemDtoList, 3); // 오늘 등록한 적이 있음
+        }
+
+        throw new IllegalArgumentException("userId" +userId + "에 해당하는 카페 등록 정보가 올바르지 않습니다 (DB 이슈)");
+
     }
 }

@@ -3,6 +3,7 @@ package com.example.project3.cafe.controller;
 import com.example.project3.cafe.dto.*;
 import com.example.project3.cafe.service.CafeServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,13 +55,21 @@ public class CafeController {
 //    }
 
     // 오늘의 카페 메뉴 - 생성
-    @Operation(summary = "카드 생성", description = "[카드 생성 페이지] 카페 정보, 메뉴 폼 내용을 요청하면 저장합니다.")
+    @Operation(summary = "카드 생성", description = "[카드 생성 페이지] 카페 정보, 메뉴 폼 내용을 요청하면 저장합니다. 추 후 삭제")
     @PostMapping("/menus")
     ResponseEntity<CafeMenuResponse> createDailyMenu(@RequestBody CafeMenuRequest menuRequest){
         CafeMenuResponse response = cafeService.createDailyMenu(menuRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @Operation(summary = "이전 카페 폼 데이터 조회", description = "[카드 생성 페이지] 카페 정보, 메뉴 폼 내용을 요청합니다.")
+    @GetMapping("/info/{usersId}") // userId : user 의 PK
+    ResponseEntity<CafeInfoResponse> getCafeInfo(@PathVariable Long userId) {
+        CafeInfoResponse response = cafeService.getCafeInfo(userId);
+
+        return ResponseEntity.ok(response);
     }
 
     // 오늘의 카페 메뉴 - 조회
