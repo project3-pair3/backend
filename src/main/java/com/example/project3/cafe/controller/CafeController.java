@@ -64,13 +64,17 @@ public class CafeController {
                 .body(response);
     }
 
+    // 오늘의 카페 메뉴 - 폼 데이터 삽입용 조회
     @Operation(summary = "이전 카페 폼 데이터 조회", description = "[카드 생성 페이지] 카페 정보, 메뉴 폼 내용을 요청합니다.")
-    @GetMapping("/info/{usersId}") // userId : user 의 PK
+    @GetMapping("/info/{userId}") // userId : user 의 PK
     ResponseEntity<CafeInfoResponse> getCafeInfo(@PathVariable Long userId) {
         CafeInfoResponse response = cafeService.getCafeInfo(userId);
 
         return ResponseEntity.ok(response);
     }
+
+    // 오늘의 카페 메뉴 - 폼 데이터 작성하고 제출
+
 
     // 오늘의 카페 메뉴 - 조회
     @Operation(summary = "메인페이지에서 카드 조회", description = "[상세 페이지] 카페 아이디를 요청하면 카드의 상세 내용을 반환합니다. (메인 페이지에서 라우팅 되는 페이지)")
