@@ -77,7 +77,7 @@ public class S3Service {
         // 1) 어떤 객체를 업로드할지 정의
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucket)
-                .key(fileName)
+                .key(key)
                 .contentType(contentType) // 파일 타입에 맞게 설정 가능
                 .build();
 
