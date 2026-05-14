@@ -1,5 +1,6 @@
 package com.example.project3.s3.controller;
 
+import com.example.project3.s3.dto.S3UrlGetResponse;
 import com.example.project3.s3.service.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ public class S3Controller {
 
     @Operation(summary = "S3 presignedUrl 반환", description = "파일 이름을 요청하면 S3에서 받은 presignedUrl을 반환합니다.")
     @GetMapping("/presigned-url")
-    public String getPresignedUrl(@RequestParam String fileName) {
-        return s3Service.getPreSignedUrlForUpload(fileName);
+    public S3UrlGetResponse getPresignedUrl(@RequestParam String fileName, @RequestParam String contentType) {
+        return s3Service.getPreSignedUrlForUpload(fileName, contentType);
     }
 }
