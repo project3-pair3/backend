@@ -42,6 +42,8 @@ public class Cafe {
 
     private String description;
 
+    private String mention;
+
     @Column(name = "opening_time")
     private LocalTime open;
 
@@ -76,13 +78,14 @@ public class Cafe {
     }
 
     public void updateInfo(String cafeName, String addressCity, String addressDistrict,
-                           String addressDetail, String description,
+                           String addressDetail, String description, String mention,
                            LocalTime open, LocalTime close, String imageUrl) {
         this.cafeName = cafeName;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
         this.addressDetail = addressDetail;
         this.description = description;
+        this.mention = mention;
         this.open = open;
         this.close = close;
         this.imageUrl = imageUrl;

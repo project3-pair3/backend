@@ -15,6 +15,7 @@ public class CafeMenuRequest {
     String addressDistrict;
     String addressDetail;
     String description;
+    String mention;
     @Schema(type = "string", example = "09:00:00", description = "오픈 시간")
     @JsonFormat(pattern = "HH:mm:ss")
     LocalTime open;

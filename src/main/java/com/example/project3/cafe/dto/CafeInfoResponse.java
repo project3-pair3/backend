@@ -21,6 +21,7 @@ public class CafeInfoResponse {
     String addressDistrict;
     String addressDetail;
     String description;
+    String mention;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     LocalTime open;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
@@ -36,6 +37,7 @@ public class CafeInfoResponse {
                 .addressDistrict(cafe.getAddressDistrict())
                 .addressDetail(cafe.getAddressDetail())
                 .description(cafe.getDescription())
+                .mention(cafe.getMention())
                 .open(cafe.getOpen())
                 .close(cafe.getClose())
                 .imageUrl(cafe.getImageUrl())

@@ -91,7 +91,6 @@ public class CafeServiceImpl implements CafeService {
 
     public List<CafeResponse> getCafeListWithFiltering(Integer categoryId, String city, String district, String listingType){
         // 반환할 것 (List -> CafeResponse)
-        // Cafe, !!!totalCount (카페의 Menu 별 stock 합계)
 
         // 필터링 [디폴트]
         // categoryId: 0 (= 전체) -> 필터링에서 type 제외
@@ -118,23 +117,16 @@ public class CafeServiceImpl implements CafeService {
         // 3. 데이터 가공
         List<CafeResponse> responseList = new ArrayList<>();
         for(Cafe cafe : cafeList) {
-            Integer totalCount = 0;
-            List<Menu> menuList = menuRepository.findByCafeIdAndUpdatedAtBetween(cafe.getId(), startOfDay, nowOfDay);
-            for(Menu menu : menuList) { // stock 은 null이 정상값으로 올 수 있음!
-                if (menu.getStock() == null) continue;
-                totalCount += menu.getStock();
-            }
-
             CafeResponse response = CafeResponse.builder()
                     .id(cafe.getId())
                     .cafeName(cafe.getCafeName())
                     .addressCity(cafe.getAddressCity())
                     .addressDistrict(cafe.getAddressDistrict())
                     .addressDetail(cafe.getAddressDetail())
+                    .mention(cafe.getMention())
                     .open(cafe.getOpen())
                     .close(cafe.getClose())
                     .imageUrl(cafe.getImageUrl())
-                    .totalCount(totalCount)
                     .updatedAt(cafe.getUpdatedAt())
                     .build();
 
@@ -178,6 +170,7 @@ public class CafeServiceImpl implements CafeService {
                     menuRequest.getAddressDistrict(),
                     menuRequest.getAddressDetail(),
                     menuRequest.getDescription(),
+                    menuRequest.getMention(),
                     menuRequest.getOpen(),
                     menuRequest.getClose(),
                     finalImageUrl
@@ -194,6 +187,7 @@ public class CafeServiceImpl implements CafeService {
                     .addressDistrict(menuRequest.getAddressDistrict())
                     .addressDetail(menuRequest.getAddressDetail())
                     .description(menuRequest.getDescription())
+                    .mention(menuRequest.getMention())
                     .open(menuRequest.getOpen())
                     .close(menuRequest.getClose())
                     .imageUrl(finalImageUrl)
@@ -274,6 +268,7 @@ public class CafeServiceImpl implements CafeService {
                     .addressDistrict("")
                     .addressDetail("")
                     .description("")
+                    .mention("")
                     .open(null)
                     .close(null)
                     .imageUrl("")
