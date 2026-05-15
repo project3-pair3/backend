@@ -170,6 +170,7 @@ public class CafeServiceImpl implements CafeService {
                     menuRequest.getAddressDistrict(),
                     menuRequest.getAddressDetail(),
                     menuRequest.getDescription(),
+                    menuRequest.getMention(),
                     menuRequest.getOpen(),
                     menuRequest.getClose(),
                     finalImageUrl
@@ -186,6 +187,7 @@ public class CafeServiceImpl implements CafeService {
                     .addressDistrict(menuRequest.getAddressDistrict())
                     .addressDetail(menuRequest.getAddressDetail())
                     .description(menuRequest.getDescription())
+                    .mention(menuRequest.getMention())
                     .open(menuRequest.getOpen())
                     .close(menuRequest.getClose())
                     .imageUrl(finalImageUrl)
