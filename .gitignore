@@ -37,4 +37,8 @@ out/
 .vscode/
 
 application.yaml
+application-local.yaml
 .env
+docker-compose.yaml
+
+postgres_data
