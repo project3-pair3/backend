@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: project3
+
+  datasource:
+    # 로컬 개발 시(IntelliJ 직접 실행)에는 localhost:5432를 사용하고,
+    # 도커로 실행할 때는 환경변수로 덮어쓰도록 구성하는 것이 좋습니다.
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/project3_db}
+    username: ${SPRING_DATASOURCE_USERNAME:user}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      # create: 매번 테이블 새로 생성 (데이터 삭제됨)
+      # update: 변경된 스키마만 반영 (데이터 유지)
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # 초기 데이터 삽입이 필요하다면 유지, 아니라면 none으로 변경 가능
+  sql:
+    init:
+      mode: always
+
+  cloud:
+    aws:
+      s3:
+        bucket: autoever-project3
+      region:
+        static: ap-northeast-2
+      stack:
+        auto: false
+      credentials:
+        access-key: ${AWS_ACCESS_KEY} # 보안을 위해 환경변수 권장
+        secret-key: ${AWS_SECRET_KEY}
+
+# 로그 레벨 설정 (필요시)
+logging:
+  level:
+    org.hibernate.SQL: debug

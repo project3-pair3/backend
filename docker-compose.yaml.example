@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # 1. 데이터베이스 서비스
+  db:
+    image: postgres:15-alpine
+    container_name: postgres-db
+    restart: always
+    #command: postgres -c timezone=Asia/Seoul -c log_timezone=Asia/Seoul
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: project3_db
+      TZ: Asia/Seoul
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data # 데이터 영속성 (컨테이너 삭제돼도 유지)
+
+  # 2. 스프링 부트 API 서비스
+  api:
+    build: .
+    container_name: spring-api
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    environment:
+      # DB 연결 정보 (localhost 대신 서비스명 'db' 사용)
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/project3_db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      TZ: Asia/Seoul
+    depends_on:
+      - db # db가 먼저 실행된 후 api가 뜹니다.
