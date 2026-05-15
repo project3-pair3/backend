@@ -70,8 +70,8 @@ public class S3Service {
             throw new IllegalArgumentException("확장자와 Content-Type이 일치하지 않습니다.");
         }
 
-        // 4. UUID 붙이기
-        String key = UUID.randomUUID() + "-" + fileName;
+        // 4. "temp/" + UUID 붙이기
+        String key = "temp/" + UUID.randomUUID() + "-" + fileName;
 
         // 5. presignedURL 반환
         // 1) 어떤 객체를 업로드할지 정의
