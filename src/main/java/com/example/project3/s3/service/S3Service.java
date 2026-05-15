@@ -107,13 +107,8 @@ public class S3Service {
      */
     public String confirmImage(String imageUrl) {
         // Exception 처리: 비정상 파일명 (e.g. temp/로 시작 안 함)
-        if (!imageUrl.contains("temp/") && !imageUrl.contains("confirm/")) {
+        if (!imageUrl.contains("temp/")) {
             throw new IllegalArgumentException("잘못된 이미지 URL 형식입니다.");
-        }
-
-        // 이미 confirm/ 경로인 경우, S3 이동 로직을 건너뛰고 그대로 반환
-        if (imageUrl.contains("confirm/")) {
-            return imageUrl;
         }
 
         // Key 추출
