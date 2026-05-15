@@ -266,6 +266,7 @@ public class CafeServiceImpl implements CafeService {
                     .addressDistrict("")
                     .addressDetail("")
                     .description("")
+                    .mention("")
                     .open(null)
                     .close(null)
                     .imageUrl("")
