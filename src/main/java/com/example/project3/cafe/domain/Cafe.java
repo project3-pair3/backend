@@ -42,6 +42,8 @@ public class Cafe {
 
     private String description;
 
+    private String mention;
+
     @Column(name = "opening_time")
     private LocalTime open;
 

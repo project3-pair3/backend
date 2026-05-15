@@ -19,6 +19,7 @@ public class CafeResponse {
     String addressCity;
     String addressDistrict;
     String addressDetail;
+    String mention;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     LocalTime open;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
