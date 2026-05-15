@@ -6,8 +6,10 @@ import com.example.project3.cafe.repository.CafeRepository;
 import com.example.project3.menu.domain.Menu;
 import com.example.project3.menu.domain.MenuCategory;
 import com.example.project3.menu.repository.MenuRepository;
+import com.example.project3.s3.service.S3Service;
 import com.example.project3.user.domain.User;
 import com.example.project3.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +24,14 @@ import java.util.Optional;
 
 @Service
 public class CafeServiceImpl implements CafeService {
+    private final S3Service s3Service;
+
     private final UserRepository userRepository;
     CafeRepository cafeRepository;
     MenuRepository menuRepository;
 
-    CafeServiceImpl(CafeRepository cafeRepository, MenuRepository menuRepository, UserRepository userRepository){
+    CafeServiceImpl(S3Service s3Service, CafeRepository cafeRepository, MenuRepository menuRepository, UserRepository userRepository){
+        this.s3Service = s3Service;
         this.cafeRepository = cafeRepository;
         this.menuRepository = menuRepository;
         this.userRepository = userRepository;
@@ -149,6 +154,17 @@ public class CafeServiceImpl implements CafeService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다: "+userId));
 
+        // ImageURL 처리
+        // null이 아닌 경우에만 S3Service 로직 호출
+        String requestImageUrl = menuRequest.getImageUrl();
+        String finalImageUrl;
+
+        if(requestImageUrl == null) {
+            finalImageUrl = null;
+        } else {
+            finalImageUrl = s3Service.confirmImage(requestImageUrl);
+        }
+
         // Cafe 처리 (있으면 수정, 없으면 신규 생성)
         Cafe targetCafe;
         Optional<Cafe> existingCafeOpt = cafeRepository.findByUserId(userId);
@@ -164,7 +180,7 @@ public class CafeServiceImpl implements CafeService {
                     menuRequest.getDescription(),
                     menuRequest.getOpen(),
                     menuRequest.getClose(),
-                    menuRequest.getImageUrl()
+                    finalImageUrl
             );
 
             // cafe DB 가 아닌 menu 수정되더라도 cafe의 updatedAt 무조건 수정
@@ -180,7 +196,7 @@ public class CafeServiceImpl implements CafeService {
                     .description(menuRequest.getDescription())
                     .open(menuRequest.getOpen())
                     .close(menuRequest.getClose())
-                    .imageUrl(menuRequest.getImageUrl())
+                    .imageUrl(finalImageUrl)
                     .build();
 
             targetCafe.setUpdatedAt();
