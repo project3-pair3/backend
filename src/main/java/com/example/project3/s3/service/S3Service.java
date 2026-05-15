@@ -5,6 +5,8 @@ import io.awspring.cloud.s3.S3Template;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.CopyObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
@@ -18,6 +20,8 @@ import java.util.UUID;
 public class S3Service {
 
     private final S3Presigner s3Presigner;
+    private final S3Client s3Client;
+    private final S3Template s3Template;
 
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
@@ -94,5 +98,34 @@ public class S3Service {
 
         // 7. URL 생성 및 반환
         return new S3UrlGetResponse(presignedUrl, objectUrl);
+    }
+
+    /**
+     * S3의 temp 경로 파일을 confirm 경로로 복사하고 원본을 삭제합니다.
+     * @param imageUrl 프론트에서 받은 imageUrl
+     * @return 변경된 confirm/ 경로의 이미지 URL
+     */
+    public String confirmImage(String imageUrl) {
+        // Exception 처리: 비정상 파일명 (e.g. temp/로 시작 안 함)
+        if (!imageUrl.contains("temp/")) {
+            throw new IllegalArgumentException("잘못된 이미지 URL 형식입니다.");
+        }
+
+        // Key 추출
+        String tempKey = imageUrl.substring(imageUrl.indexOf("temp/"));
+        String confirmKey = tempKey.replace("temp/", "confirm/");
+
+        // S3 오브젝트 경로 변경
+        CopyObjectRequest copyRequest = CopyObjectRequest.builder()
+                .sourceBucket(bucket)
+                .sourceKey(tempKey)
+                .destinationBucket(bucket)
+                .destinationKey(confirmKey)
+                .build();
+        s3Client.copyObject(copyRequest);
+
+        s3Template.deleteObject(bucket, tempKey);
+
+        return imageUrl.replace("temp/", "confirm/");
     }
 }
