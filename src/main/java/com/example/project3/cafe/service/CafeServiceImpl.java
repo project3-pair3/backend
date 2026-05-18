@@ -136,6 +136,8 @@ public class CafeServiceImpl implements CafeService {
         // 4. 정렬
         if ("recentlyUpdated".equals(listingType)) {
             responseList.sort((o1, o2) -> o2.getUpdatedAt().compareTo(o1.getUpdatedAt()));
+        } else if ("oldest".equals(listingType)) {
+            responseList.sort((o1, o2) -> o1.getUpdatedAt().compareTo(o2.getUpdatedAt()));
         }
 
         return responseList;

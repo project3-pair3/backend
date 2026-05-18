@@ -47,7 +47,7 @@ public class CafeController {
             @RequestParam(required = false, defaultValue = "0") Integer categoryId,
             @RequestParam(required = false, defaultValue = "서울시") String addressCity,
             @RequestParam(required = false, defaultValue = "전체") String addressDistrict,
-            @RequestParam(required = false, defaultValue = "basic") String listingType
+            @RequestParam(required = false, defaultValue = "recentlyUpdated") String listingType
     ){
         List<CafeResponse> cafeResponseList = cafeService.getCafeListWithFiltering(categoryId, addressCity, addressDistrict, listingType);
 
