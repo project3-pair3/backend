@@ -2,6 +2,7 @@ package com.example.project3.cafe.controller;
 
 import com.example.project3.cafe.dto.*;
 import com.example.project3.cafe.service.CafeServiceImpl;
+import com.example.project3.comment.domain.Comment;
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -91,5 +92,22 @@ public class CafeController {
         CafeMenuResponse response = cafeService.getDailyMenu(id);
 
         return ResponseEntity.ok(response);
+    }
+
+    // 리뷰 작성 (리뷰 화면에서 “작성” 버튼 눌렀을때)
+    @Operation(summary = "리뷰 작성", description = "[상세 화면-리뷰 화면] 리뷰 화면에서 “작성” 버튼을 누르면 리뷰 코멘트를 저장합니다.")
+    @PostMapping("{id}/review")
+    ResponseEntity<Void> createComment(@PathVariable Long id, @RequestBody CafeCommentRequest commentRequest){
+        cafeService.createComment(id, commentRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    // 리뷰 리스트 조회 (리뷰 버튼 눌렀을 때)
+    @Operation(summary = "리뷰 리스트 조회", description = "[상세 화면] 상세 화면에서 리뷰 버튼을 눌렀을 때 리뷰 리스트를 응답받습니다.")
+    @GetMapping("{id}/review")
+    ResponseEntity<List<CafeCommentResponse>> getCommentList(){
+        List<CafeCommentResponse> responseList = cafeService.getCommentList();
+        return ResponseEntity.ok(responseList);
     }
 }

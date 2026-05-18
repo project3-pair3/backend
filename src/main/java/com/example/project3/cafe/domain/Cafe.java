@@ -1,5 +1,6 @@
 package com.example.project3.cafe.domain;
 
+import com.example.project3.comment.domain.Comment;
 import com.example.project3.user.domain.User;
 import com.example.project3.menu.domain.Menu;
 import com.fasterxml.jackson.annotation.JsonIgnore;

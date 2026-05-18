@@ -3,6 +3,8 @@ package com.example.project3.cafe.service;
 import com.example.project3.cafe.domain.Cafe;
 import com.example.project3.cafe.dto.*;
 import com.example.project3.cafe.repository.CafeRepository;
+import com.example.project3.comment.domain.Comment;
+import com.example.project3.comment.repository.CommentRepository;
 import com.example.project3.menu.domain.Menu;
 import com.example.project3.menu.domain.MenuCategory;
 import com.example.project3.menu.repository.MenuRepository;
@@ -29,12 +31,14 @@ public class CafeServiceImpl implements CafeService {
     private final UserRepository userRepository;
     CafeRepository cafeRepository;
     MenuRepository menuRepository;
+    CommentRepository commentRepository;
 
-    CafeServiceImpl(S3Service s3Service, CafeRepository cafeRepository, MenuRepository menuRepository, UserRepository userRepository){
+    CafeServiceImpl(S3Service s3Service, CafeRepository cafeRepository, MenuRepository menuRepository, UserRepository userRepository, CommentRepository commentRepository){
         this.s3Service = s3Service;
         this.cafeRepository = cafeRepository;
         this.menuRepository = menuRepository;
         this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
     }
 
     public CafeResponse createCafe(CafeRequest cafeRequest) {
@@ -310,5 +314,41 @@ public class CafeServiceImpl implements CafeService {
 
         throw new IllegalArgumentException("userId" +userId + "에 해당하는 카페 등록 정보가 올바르지 않습니다 (DB 이슈)");
 
+    }
+
+    public void createComment(Long cafeId, CafeCommentRequest commentRequest) {
+        // 카페 존재 여부 확인
+        Cafe cafe = cafeRepository.findById(cafeId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 CafeId 입니다: " + cafeId));
+
+        // 유저 존재 여부 확인
+        User user = userRepository.findById(commentRequest.getId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 UserId 입니다: " + commentRequest.getId()));
+
+        // comment 생성
+        // id, nickname, comment
+        Comment comment = Comment.builder()
+                .comment(commentRequest.getComment())
+                .user(user)
+                .cafe(cafe)
+                .build();
+        commentRepository.save(comment);
+    }
+
+    public List<CafeCommentResponse> getCommentList() {
+        List<Comment> commentList = commentRepository.findAllByOrderByCreatedAtDesc();
+
+        List<CafeCommentResponse> responseList = new ArrayList<>();
+        for(Comment comment : commentList) {
+            CafeCommentResponse response = CafeCommentResponse.builder()
+                    .nickname(comment.getUser().getNickname())
+                    .comment(comment.getComment())
+                    .createdAt(comment.getCreatedAt())
+                    .build();
+
+            responseList.add(response);
+        }
+
+        return responseList;
     }
 }
