@@ -4,20 +4,24 @@ import com.example.project3.user.domain.User;
 import com.example.project3.user.dto.UserLoginRequest;
 import com.example.project3.user.dto.UserSignupRequest;
 import com.example.project3.user.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
 
-    UserServiceImpl(UserRepository userRepository) {
+    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User createUser(UserSignupRequest request) {
+        String password = passwordEncoder.encode(request.getPassword());
         User user = User.builder()
                 .userId(request.getUserId())
-                .password(request.getPassword())
+                .password(password)
                 .nickname(request.getNickname())
                 .build();
 
@@ -29,7 +33,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserId(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다: " + request.getUserId()));
 
-        if(!user.getPassword().equals(request.getPassword())) {
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
