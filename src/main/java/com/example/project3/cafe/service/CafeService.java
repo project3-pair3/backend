@@ -12,5 +12,6 @@ public interface CafeService {
 
     public CafeInfoResponse getCafeInfo(Long userId);
     public List<CafeResponse> getCafeListWithFiltering(Integer categoryId, String addressCity, String addressDistrict, String listingType);
-
+    public void createComment(Long cafeId, CafeCommentRequest commentRequest);
+    public List<CafeCommentResponse> getCommentList();
 }
