@@ -341,6 +341,7 @@ public class CafeServiceImpl implements CafeService {
         List<CafeCommentResponse> responseList = new ArrayList<>();
         for(Comment comment : commentList) {
             CafeCommentResponse response = CafeCommentResponse.builder()
+                    .reviewId(comment.getId())
                     .nickname(comment.getUser().getNickname())
                     .comment(comment.getComment())
                     .createdAt(comment.getCreatedAt())

@@ -9,12 +9,14 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class CafeCommentResponse {
+    Long reviewId;
     String nickname;
     String comment;
     LocalDateTime createdAt;
 
     public static CafeCommentResponse from(Comment comment){
         return CafeCommentResponse.builder()
+                .reviewId(comment.getId())
                 .nickname(comment.getUser().getNickname())
                 .comment(comment.getComment())
                 .createdAt(comment.getCreatedAt())
