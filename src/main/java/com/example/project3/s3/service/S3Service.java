@@ -106,26 +106,33 @@ public class S3Service {
      * @return 변경된 confirm/ 경로의 이미지 URL
      */
     public String confirmImage(String imageUrl) {
-        // Exception 처리: 비정상 파일명 (e.g. temp/로 시작 안 함)
-        if (!imageUrl.contains("temp/")) {
+
+        if(imageUrl.contains("temp/")){
+
+            // Key 추출
+            String tempKey = imageUrl.substring(imageUrl.indexOf("temp/"));
+            String confirmKey = tempKey.replace("temp/", "confirm/");
+
+            // S3 오브젝트 경로 변경
+            CopyObjectRequest copyRequest = CopyObjectRequest.builder()
+                    .sourceBucket(bucket)
+                    .sourceKey(tempKey)
+                    .destinationBucket(bucket)
+                    .destinationKey(confirmKey)
+                    .build();
+            s3Client.copyObject(copyRequest);
+
+            s3Template.deleteObject(bucket, tempKey);
+
+            return imageUrl.replace("temp/", "confirm/");
+
+        } else if(imageUrl.contains("confirm/")) {
+
+            return imageUrl;
+
+        } else {
+            // Exception 처리: 비정상 파일명 (e.g. temp/로 시작 안 함)
             throw new IllegalArgumentException("잘못된 이미지 URL 형식입니다.");
         }
-
-        // Key 추출
-        String tempKey = imageUrl.substring(imageUrl.indexOf("temp/"));
-        String confirmKey = tempKey.replace("temp/", "confirm/");
-
-        // S3 오브젝트 경로 변경
-        CopyObjectRequest copyRequest = CopyObjectRequest.builder()
-                .sourceBucket(bucket)
-                .sourceKey(tempKey)
-                .destinationBucket(bucket)
-                .destinationKey(confirmKey)
-                .build();
-        s3Client.copyObject(copyRequest);
-
-        s3Template.deleteObject(bucket, tempKey);
-
-        return imageUrl.replace("temp/", "confirm/");
     }
 }
