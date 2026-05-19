@@ -106,8 +106,8 @@ public class CafeController {
     // 리뷰 리스트 조회 (리뷰 버튼 눌렀을 때)
     @Operation(summary = "리뷰 리스트 조회", description = "[상세 화면] 상세 화면에서 리뷰 버튼을 눌렀을 때 리뷰 리스트를 응답받습니다.")
     @GetMapping("{id}/review")
-    ResponseEntity<List<CafeCommentResponse>> getCommentList(){
-        List<CafeCommentResponse> responseList = cafeService.getCommentList();
+    ResponseEntity<List<CafeCommentResponse>> getCommentList(@PathVariable Long id){
+        List<CafeCommentResponse> responseList = cafeService.getCommentList(id);
         return ResponseEntity.ok(responseList);
     }
 

@@ -13,6 +13,6 @@ public interface CafeService {
     public CafeInfoResponse getCafeInfo(Long userId);
     public List<CafeResponse> getCafeListWithFiltering(Integer categoryId, String addressCity, String addressDistrict, String listingType);
     public void createComment(Long cafeId, CafeCommentRequest commentRequest);
-    public List<CafeCommentResponse> getCommentList();
+    public List<CafeCommentResponse> getCommentList(Long cafeId);
     public void deleteComment(Long cafeId, Long commentId, Long userId);
 }

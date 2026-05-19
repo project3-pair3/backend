@@ -14,6 +14,7 @@ import com.example.project3.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -335,8 +336,8 @@ public class CafeServiceImpl implements CafeService {
         commentRepository.save(comment);
     }
 
-    public List<CafeCommentResponse> getCommentList() {
-        List<Comment> commentList = commentRepository.findAllByOrderByCreatedAtDesc();
+    public List<CafeCommentResponse> getCommentList(Long cafeId) {
+        List<Comment> commentList = commentRepository.findAllByCafeIdOrderByCreatedAtDesc(cafeId);
 
         List<CafeCommentResponse> responseList = new ArrayList<>();
         for(Comment comment : commentList) {
