@@ -110,4 +110,13 @@ public class CafeController {
         List<CafeCommentResponse> responseList = cafeService.getCommentList();
         return ResponseEntity.ok(responseList);
     }
+
+    // 리뷰 삭제 (리뷰 화면에서 본인 리뷰 글 삭제)
+    @Operation(summary = "리뷰 삭제", description = "[상세 화면-리뷰 화면] 리뷰 화면에서 본일 리뷰 글을 삭제합니다.")
+    @DeleteMapping("{id}/review/{reviewId}/{userId}")
+    ResponseEntity<Void> deleteComment(@PathVariable Long id, @PathVariable Long reviewId, @PathVariable Long userId){
+        cafeService.deleteComment(id, reviewId, userId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

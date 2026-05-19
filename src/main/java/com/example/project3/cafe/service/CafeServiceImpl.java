@@ -341,6 +341,7 @@ public class CafeServiceImpl implements CafeService {
         List<CafeCommentResponse> responseList = new ArrayList<>();
         for(Comment comment : commentList) {
             CafeCommentResponse response = CafeCommentResponse.builder()
+                    .reviewId(comment.getId())
                     .nickname(comment.getUser().getNickname())
                     .comment(comment.getComment())
                     .createdAt(comment.getCreatedAt())
@@ -350,5 +351,21 @@ public class CafeServiceImpl implements CafeService {
         }
 
         return responseList;
+    }
+
+    public void deleteComment(Long cafeId, Long commentId, Long userId){
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 CommentId 입니다: " + commentId));
+
+        // reviewId로 cafeId FK 맞는지 체크
+        if(!comment.getCafe().getId().equals(cafeId)){
+            throw new IllegalArgumentException("Comment와 연관이 없는 cafeId입니다.");
+        }
+        // reviewId로 userId FK 맞는지 체크
+        if(!comment.getUser().getId().equals(userId)){
+            throw new IllegalArgumentException("Comment와 연관이 없는 userId입니다.");
+        }
+
+        commentRepository.delete(comment);
     }
 }
